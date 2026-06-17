@@ -8,6 +8,8 @@ import Aura from '@primevue/themes/aura'
 import ConfirmationService from 'primevue/confirmationservice'
 import 'primeicons/primeicons.css'
 
+import router from './router'
+
 const app = createApp(App)
 
 app.use(PrimeVue, {
@@ -20,5 +22,6 @@ app.use(PrimeVue, {
 })
 
 app.use(ConfirmationService)
+app.use(router)
 
 app.mount('#app')
