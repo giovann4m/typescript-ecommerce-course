@@ -12,7 +12,15 @@
         <!-- Navegação com RouterLink -->
         <nav class="nav">
           <RouterLink to="/" class="nav-link">Produtos</RouterLink>
-          <RouterLink to="/login" class="nav-link">Entrar</RouterLink>
+
+          <template v-if="isAuthenticated">
+            <span class="nav-user">Olá, {{ username }}</span>
+            <button class="nav-link logout" @click="logout">Sair</button>
+          </template>
+          <template v-else>
+            <RouterLink to="/login" class="nav-link">Entrar</RouterLink>
+          </template>
+
           <RouterLink to="/carrinho" class="nav-link cart-link">
             🛒
             <span class="badge" v-if="cartCount > 0">{{ cartCount }}</span>
@@ -34,16 +42,24 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useAuthStore } from '../stores/auth'
 
 export default defineComponent({
   data() {
-    return {
-      cartCount: 0
-    }
+    return { cartCount: 0 }
   },
+
+  computed: {
+    authStore() { return useAuthStore() },
+    isAuthenticated() { return useAuthStore().isAuthenticated },
+    username() { return useAuthStore().user?.username }
+  },
+
   methods: {
-    updateCart(count: number) {
-      this.cartCount = count
+    updateCart(count: number) { this.cartCount = count },
+    logout() {
+      useAuthStore().logout()
+      this.$router.push('/login')
     }
   }
 })
@@ -132,4 +148,8 @@ body {
   content: ''; flex: 1;
   height: 1px; background: var(--border);
 }
+
+.nav-user { font-size: 0.85rem; color: var(--blue); font-family: var(--font-mono); }
+.logout { background: transparent; border: none; cursor: pointer; font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: #f87171; transition: color 0.2s; }
+.logout:hover { color: #fca5a5; }
 </style>
