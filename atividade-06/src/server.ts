@@ -1,7 +1,7 @@
 import express from 'express'
 import { logger } from './logger.middleware'
 import productsRouter from './routes/products.routes'
-import ordersRouter from './routes/orders.routes'
+import categoryRouter from './routes/category.routes'
 
 const app = express()
 const PORT = 3000
@@ -12,7 +12,7 @@ app.use(logger)
 
 // Rotas
 app.use('/products', productsRouter)
-app.use('/orders', ordersRouter)
+app.use('/category', categoryRouter)
 
 app.get('/', (req, res) => {
   res.json({ message: 'API Zentech rodando! 🚀' })
